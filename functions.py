@@ -17,13 +17,39 @@ def initialize_inventory(products):
     return inventory
 
 # Update function "get_customer_orders" to grab the pairs of product:quantity
-def get_customer_orders():
+# Modify the `get_customer_orders` function to include error handling.
+#   - If the user enters an invalid number of orders (e.g., a negative value or a non-numeric value), display an error message and ask them to re-enter the number of orders.
+#   - If the user enters an invalid product name (e.g., a product name that is not in the inventory), or that doesn't have stock available, display an error message and ask them to re-enter the product name. *Hint: you will need to pass inventory as a parameter*
+#   - Use a try-except block to handle the error and continue prompting the user until a valid product name is entered.
+def get_customer_orders(inventory):
     customer_orders = {}
-    customer_orders_num = int(input("Enter the number of products you want to order: "))
+    while True:
+        try:
+            customer_orders_num = int(input("Enter the number of products you want to order: "))
+            if customer_orders_num < 0:
+                raise ValueError("Number of orders cannot be negative.")
+            break
+        except ValueError as e:
+            print(f"Error: {e}")
     for i in range(customer_orders_num):
-        product = input(f"Enter the name of product number {i + 1}: ")
-        quantity = int(input(f"Enter the quantity of {product}: "))
-        customer_orders[product] = quantity
+        while True:
+            try:
+                product = input(f"Enter the name of product number {i + 1}: ")
+                if product not in inventory:
+                    raise ValueError("Product not found in inventory.")
+                if inventory[product] == 0:
+                    raise ValueError("Product out of stock.")
+                quantity = int(input(f"Enter the quantity of {product}: "))
+                if quantity < 0:
+                    raise ValueError("Quantity cannot be negative.")
+                if quantity > inventory[product]:
+                    raise ValueError("Not enough stock available.")
+                if type(quantity) != int:
+                    raise ValueError("Quantity must be an integer.")
+                customer_orders[product] = quantity
+                break
+            except ValueError as e:
+                print(f"Error: {e}")
     return customer_orders
 
 # 4. Modify the update_inventory function to remove the product from the inventory if its quantity becomes zero after fulfilling the customer orders. 
