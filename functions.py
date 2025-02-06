@@ -7,7 +7,7 @@ def initialize_inventory(products):
     for product in products:
         while True:
             try:
-                quantity = int(input(f"Enterr the quantity of {product}s available: "))
+                quantity = int(input(f"Enter the quantity of {product}s available: "))
                 if quantity < 0:
                     raise ValueError("Quantity cannot be negative.")
                 inventory[product] = quantity
@@ -58,12 +58,21 @@ def print_updated_inventory(inventory):
 # For each product in customer_orders, prompt the user to enter the price of that product. 
 # Use comprehension to calculate the total price. 
 # Note: assume that the user can only have 1 unit of each product.
+# Modify the `calculate_total_price` function to include error handling.
+#   - If the user enters an invalid price (e.g., a negative value or a non-numeric value), display an error message and ask them to re-enter the price for that product.
+#   - Use a try-except block to handle the error and continue prompting the user until a valid price is entered.
 def calculate_total_price(customer_orders):
     total_price = 0
     for product in customer_orders:
-        price = float(input(f"Enter the price of {product}: "))
-        total_price += price * customer_orders[product]
-
+        while True:
+            try:
+                price = float(input(f"Enter the price of {product}: "))
+                if price < 0:
+                    raise ValueError("Price cannot be negative.")
+                total_price += price * customer_orders[product]
+                break
+            except ValueError as e:
+                print(f"Error: {e}")
     return total_price
 
 # Create function to print total price, calling function "calculate_total_price" inside
