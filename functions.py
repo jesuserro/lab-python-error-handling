@@ -1,7 +1,19 @@
 # 1. Define a function named `initialize_inventory` that takes `products` as a parameter. 
-# Inside the function, implement the code for initializing the inventory dictionary using a loop and user input.
+# modify the `initialize_inventory` function to include error handling.
+# - If the user enters an invalid quantity (e.g., a negative value or a non-numeric value), display an error message and ask them to re-enter the quantity for that product.
+# - Use a try-except block to handle the error and continue prompting the user until a valid quantity is entered.
 def initialize_inventory(products):
-    inventory = {product: int(input(f"Enter the quantity of {product}s available: ")) for product in products}
+    inventory = {}
+    for product in products:
+        while True:
+            try:
+                quantity = int(input(f"Enterr the quantity of {product}s available: "))
+                if quantity < 0:
+                    raise ValueError("Quantity cannot be negative.")
+                inventory[product] = quantity
+                break
+            except ValueError as e:
+                print(f"Error: {e}")
     return inventory
 
 # Update function "get_customer_orders" to grab the pairs of product:quantity
